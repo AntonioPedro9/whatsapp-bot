@@ -1,40 +1,41 @@
 const puppeteer = require("puppeteer");
+const prompt = require("prompt-sync")();
 
-let browser, page;
+let browser, page, chatName;
 
 (async function main() {
-	try {
-		browser = await puppeteer.launch({ headless: false });
-		page = await browser.newPage();
 
-		await page.goto("https://web.whatsapp.com/", { waitUntil: "domcontentloaded" });
+	// Get the whatsapp chat name:
+	do {
+		chatName = prompt("Write exactly the name of the chat you want to spam: ");
+	} while (!chatName);
 
-		selectChat();
-		sendMessage(message);
-	}
-	catch (error) {
-		console.error(error);
-	}
+	// Launch browser:
+	browser = await puppeteer.launch({ headless: false });
+	page = await browser.newPage();
+
+	// Navigate to whatsapp:
+	await page.goto("https://web.whatsapp.com/", { waitUntil: "domcontentloaded" });
+
+	selectChat(chatName);
+	sendMessage(message);
 })();
 
-async function selectChat() {
-	const chatName = "teste";
-
-	await page.waitForSelector("._1MZWu");
-	await page.click(`span[title="${chatName}"]`);
+async function selectChat(chatName) {
+	await page.waitForSelector("._2Evw0");                 // wait search input load
+	await page.type("div[data-tab='3']", chatName);        // type the chat name at the input
+	await page.click("span[class='matched-text _1VzZY']"); // click at chat
 }
 
 async function sendMessage(message) {
-	await page.waitForSelector("._2ig1U");
-	
+	await page.waitForSelector("._2ig1U"); // wait message input load
+
 	let lines = message.split("\n");
 	let i = 0;
 
 	while (i < lines.length && lines[i].trim() != "") {
-		await page.type("div[data-tab='6']", message);
-		await page.click("span[data-testid='send']");
-
-		// console.log(`Line ${i + 1} of ${lines.length}: ${lines[i]}`);
+		await page.type("div[data-tab='6']", message); // type the message at the input
+		await page.click("span[data-testid='send']");  // click at send button
 
 		i++
 	}

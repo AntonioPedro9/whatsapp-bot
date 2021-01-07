@@ -9,6 +9,7 @@
   "author": "Antônio Pedro Rodrigues Santos",
   "license": "ISC",
   "dependencies": {
+    "prompt-sync": "^4.2.0",
     "puppeteer": "^5.5.0"
   }
 }
