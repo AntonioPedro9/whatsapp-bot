@@ -5,5 +5,5 @@ Run the following code inside whatsapp-bot folder
 npm install
 ```
 ```
-node bot.js
+node src/bot.js
 ```
