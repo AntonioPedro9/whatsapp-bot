@@ -22,13 +22,14 @@ let browser, page, chatName;
 })();
 
 async function selectChat(chatName) {
-	await page.waitForSelector("._2Evw0");                 // wait search input load
-	await page.type("div[data-tab='3']", chatName);        // type the chat name at the input
-	await page.click("span[class='matched-text _1VzZY']"); // click at chat
+	await page.waitForSelector("div[data-tab='3']");                 // wait search input load
+	await page.type("div[data-tab='3']", chatName);                  // type chat name at input
+	await page.waitForSelector("span[class='matched-text _1VzZY']"); // wait chat message load
+	await page.click("span[class='matched-text _1VzZY']");           // click at chat message
 }
 
 async function sendMessage(message) {
-	await page.waitForSelector("._2ig1U"); // wait message input load
+	await page.waitForSelector("div[data-tab='6']"); // wait message input load
 
 	let lines = message.split("\n");
 	let i = 0;
