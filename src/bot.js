@@ -18,8 +18,8 @@ let browser, page;
 	// Navigate to whatsapp:
 	await page.goto("https://web.whatsapp.com/", { waitUntil: "domcontentloaded" });
 
-	await typeIn("div[data-tab='3']", chatName);        // type chat name in the input
-	await clickAt("span[class='matched-text _1VzZY']"); // click at chat message
+	await typeIn("div[data-tab='3']", chatName);        // type chat name in the filter input
+	await clickAt("span[class='matched-text _1VzZY']"); // click at filtered chat message
 
 	sendMessage(message);
 })();
