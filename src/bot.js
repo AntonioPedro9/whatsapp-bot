@@ -1,13 +1,18 @@
 const puppeteer = require("puppeteer");
-const prompt = require("prompt-sync")();
+const readline = require('readline');
 const message = require("./message");
+
+const rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout
+});
 
 let browser, page;
 
 (async function main() {
 
 	// Get whatsapp chat name:
-	do var chatName = prompt("Write exactly the name of the chat you want to spam: ");
+	do var chatName = await getChatName("Type the exact name of the chat you want to spam: ");
 	while (!chatName);
 
 	// Launch browser:
@@ -17,11 +22,27 @@ let browser, page;
 	// Navigate to whatsapp:
 	await page.goto("https://web.whatsapp.com/", { waitUntil: "domcontentloaded" });
 
-	await typeIn("div[data-tab='3']", chatName);        // type chat name in the filter input
-	await clickAt("span[class='matched-text _1VzZY']"); // click at filtered chat message
+	await clickAt("span[data-testid='chat']");   // click at new message icon
+
+	await typeIn("div[data-tab='3']", chatName); // type chat name in the filter
+
+	await sleep(1000);
+
+	await clickAt(`span[title='${chatName}']`);  // click at filtered chat message
 
 	sendMessage(message);
 })();
+
+
+
+function getChatName() {
+	return new Promise(resolve => {
+		rl.question("Type exactly the name of the chat you want to spam: ", (input) => {
+			rl.close();
+			return resolve(input);
+		});
+	});
+};
 
 
 
@@ -49,4 +70,12 @@ async function clickAt(element) {
 async function typeIn(element, text) {
 	await page.waitForSelector(`${element}`);
 	await page.type(`${element}`, text);
+}
+
+
+
+async function sleep(milliseconds) {
+	return new Promise((resolve) => {
+		setTimeout(resolve, milliseconds);
+	});
 }
