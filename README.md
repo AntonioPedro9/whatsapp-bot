@@ -1,6 +1,6 @@
 ## How to run
 
-Run the following code inside whatsapp-bot folder
+Run the following commands inside whatsapp-bot folder
 ```
 npm install
 ```
