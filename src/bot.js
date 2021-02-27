@@ -17,7 +17,7 @@ let browser, page;
 
 	// Launch browser:
 	browser = await puppeteer.launch({ headless: false, defaultViewport: null, args: ["--start-maximized"] });
-	page = await browser.newPage();
+	page = (await browser.pages())[0];
 
 	// Navigate to whatsapp:
 	await page.goto("https://web.whatsapp.com/", { waitUntil: "domcontentloaded" });
