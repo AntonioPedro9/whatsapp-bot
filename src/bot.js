@@ -36,7 +36,7 @@ let browser, page;
 
 
 function getChatName() {
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		rl.question("Type exactly the name of the chat you want to spam: ", (input) => {
 			rl.close();
 			return resolve(input);
