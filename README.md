@@ -2,8 +2,8 @@
 
 Run the following commands inside whatsapp-bot folder
 ```
-npm install
+> npm install
 ```
 ```
-node src/bot.js
+> node src/bot.js
 ```
