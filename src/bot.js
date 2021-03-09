@@ -11,38 +11,26 @@ let browser, page;
 
 (async function main() {
 
-	// Get whatsapp chat name:
+	// get whatsapp chat name:
 	do var chatName = await getChatName("Type the exact name of the chat you want to spam: ");
 	while (!chatName);
 
-	// Launch browser:
+	// launch browser:
 	browser = await puppeteer.launch({ headless: false, defaultViewport: null, args: ["--start-maximized"] });
 	page = (await browser.pages())[0];
 
-	// Navigate to whatsapp:
-	await page.goto("https://web.whatsapp.com/", { waitUntil: "domcontentloaded" });
+	await page.goto("https://web.whatsapp.com/", { waitUntil: "domcontentloaded" }); // navigate to whatsapp
 
-	await clickAt("span[data-testid='chat']");   // click at new message icon
+	await clickAt("span[data-testid='chat']"); // click at new message icon
 
 	await typeIn("div[data-tab='3']", chatName); // type chat name in the filter
 
 	await sleep(1000);
 
-	await clickAt(`span[title='${chatName}']`);  // click at filtered chat message
+	await clickAt(`span[title='${chatName}']`); // click at filtered chat message
 
 	sendMessage(message);
 })();
-
-
-
-function getChatName() {
-	return new Promise((resolve) => {
-		rl.question("Type exactly the name of the chat you want to spam: ", (input) => {
-			rl.close();
-			return resolve(input);
-		});
-	});
-};
 
 
 
@@ -57,6 +45,17 @@ async function sendMessage(message) {
 		i++
 	}
 }
+
+
+
+function getChatName() {
+	return new Promise((resolve) => {
+		rl.question("Type exactly the name of the chat you want to spam: ", (input) => {
+			rl.close();
+			return resolve(input);
+		});
+	});
+};
 
 
 

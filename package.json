@@ -4,7 +4,7 @@
   "description": "bot that sends automated messages",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/bot.js"
   },
   "author": "Antônio Pedro Rodrigues Santos",
   "license": "ISC",
