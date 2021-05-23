@@ -1,33 +1,29 @@
 const puppeteer = require("puppeteer");
-const readline = require('readline');
+const readline = require("readline");
 const message = require("./message");
-
-const rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout
-});
+const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
 let browser, page;
 
 (async function main() {
 
-	// get whatsapp chat name:
-	do var chatName = await getChatName("Type the exact name of the chat you want to spam: ");
-	while (!chatName);
+	do {
+		var chatName = await getChatName();
+	} while (!chatName);
 
-	// launch browser:
-	browser = await puppeteer.launch({ headless: false, defaultViewport: null, args: ["--start-maximized"] });
+	browser = await puppeteer.launch({
+		headless: false,
+		defaultViewport: null,
+		args: ["--start-maximized"]
+	});
+
 	page = (await browser.pages())[0];
 
-	await page.goto("https://web.whatsapp.com/", { waitUntil: "domcontentloaded" }); // navigate to whatsapp
-
-	await clickAt("span[data-testid='chat']"); // click at new message icon
-
-	await typeIn("div[data-tab='3']", chatName); // type chat name in the filter
-
-	await sleep(1000);
-
-	await clickAt(`span[title='${chatName}']`); // click at filtered chat message
+	await page.goto("https://web.whatsapp.com/"); // navega até a página do whatsapp web
+	await clickOn("span[data-testid='chat']");    // clica no ícone do input de pesquisa
+	await typeIn("div[data-tab='3']", chatName);  // escreve o nome do chat no input
+	await sleep(1000);                            // espera 1 segundo
+	await clickOn(`span[title='${chatName}']`);   // clica no chat filtrado
 
 	sendMessage(message);
 })();
@@ -35,12 +31,12 @@ let browser, page;
 
 
 async function sendMessage(message) {
-	let lines = message.split("\n");
+	let lines = message.split("\n"); // divide a mensagem a cada quebra de linha
 	let i = 0;
 
 	while (i < lines.length && lines[i].trim() != "") {
-		await typeIn("div[data-tab='6']", message); // type message in the input
-		await clickAt("span[data-testid='send']");  // click at send button
+		await typeIn("div[data-tab='6']", message); // escreve o texto no input
+		await clickOn("span[data-testid='send']");  // clica no botão de enviar
 
 		i++
 	}
@@ -59,7 +55,7 @@ function getChatName() {
 
 
 
-async function clickAt(element) {
+async function clickOn(element) {
 	await page.waitForSelector(`${element}`);
 	await page.click(`${element}`);
 }
